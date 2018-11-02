@@ -1,4 +1,3 @@
-#!/usr/bin/python
 ##from __future__ import print_function
 ##from googleapiclient.discovery import build
 ##from httplib2 import Http
@@ -7,7 +6,6 @@ import os
 import time
 import math
 import logging
-import signal
 import sys
 
 ##import pygame, sys
@@ -22,14 +20,6 @@ GPIO.setup(23,GPIO.IN, pull_up_down=GPIO.PUD_UP)
 #GPIO.setup(24,GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(26,GPIO.OUT)
 
-
-def signal_handler(sig, frame):
-        GPIO.cleanup()
-        sys.exit(0)
-signal.signal(signal.SIGINT, signal_handler)
-signal.pause()
-
-
 # set up the flow meters
 fm = FlowMeter('america', ["beer"])
 
@@ -43,30 +33,43 @@ def doAClick(channel):
 GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) # Beer, on Pin 23
 
 # main loop
-while True:
-    '''
-    store = file.Storage('token.json')
-    creds = store.get()
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-        creds = tools.run_flow(flow, store)
-    service = build('sheets', 'v4', http=creds.authorize(Http()))
-    SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
-    ID_NUMBER_RANGE_NAME = 'number_of_ids!A1'
-    num_ids = service.spreadsheets().values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
-    id_values = num_ids.get('values', [])
-    print(id_values)
-    '''
-    if fm.enabled:
-        print(fm.getFormattedThisPour())
-        GPIO.output(26,1)
-    '''
-    time.sleep(2)
-    GPIO.output(26,0)
-    time.sleep(2)
-    '''
+try:
+    while True:
+        '''
+        store = file.Storage('token.json')
+        creds = store.get()
+        if not creds or creds.invalid:
+            flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+            creds = tools.run_flow(flow, store)
+        service = build('sheets', 'v4', http=creds.authorize(Http()))
+        SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
+        ID_NUMBER_RANGE_NAME = 'number_of_ids!A1'
+        num_ids = service.spreadsheets().values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
+        id_values = num_ids.get('values', [])
+        print(id_values)
+        '''
+        if fm.enabled:
+            print(fm.getFormattedThisPour())
+            GPIO.output(26,1)
+        '''
+        time.sleep(2)
+        GPIO.output(26,0)
+        time.sleep(2)
+        '''
 
-    currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
-    # reset flow meter after each pour (2 secs of inactivity)
-    if (fm.thisPour <= 0.23 and currentTime - fm.lastClick > 2000):
-        fm.thisPour = 0.0
+        currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
+        # reset flow meter after each pour (2 secs of inactivity)
+        if (fm.thisPour <= 0.23 and currentTime - fm.lastClick > 2000):
+            fm.thisPour = 0.0
+
+except KeyboardInterrupt:  
+    # here you put any code you want to run before the program   
+    # exits when you press CTRL+C  
+except:  
+    # this catches ALL other exceptions including errors.  
+    # You won't get any error messages for debugging  
+    # so only use it once your code is working  
+    print "Other error or exception occurred!"  
+  
+finally:  
+    GPIO.cleanup() # this ensures a clean exit  
