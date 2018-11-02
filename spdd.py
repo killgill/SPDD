@@ -78,7 +78,7 @@ try:
                     pourFlag = False    # no more beer
                     # GPIO.output(26,0) # stop flow
                     # ADD MORE SHIT HERE
-                    print("Enjoy your cold beer")
+                    print("Enjoy your cold beer, brother")
                     fm.clearCurrPour()  # clear
                     authFlag = False    # reset authorization
                     swipe = None        # clear the swipe
@@ -88,13 +88,6 @@ try:
         elif ~authFlag and isinstance(swipe, basestring):
             print("Invalid ID#. What is object?")
             swipe = None #clear the swipe
-
-
-            
-            
-
-            
-            
 
 except:  
     # this catches ALL other exceptions including errors.  
