@@ -22,6 +22,8 @@ GPIO.setup(23,GPIO.IN, pull_up_down=GPIO.PUD_UP)
 #GPIO.setup(24,GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(26,GPIO.OUT)
 
+swipe = None
+
 # set up the flow meters
 fm = FlowMeter('america', ["beer"])
 
@@ -60,6 +62,10 @@ try:
         ids_list = ids_list_response['values'][0]
         print(ids_list)
         print(type(ids_list))
+        swipe = input("ID #:")
+        if swipe
+            print(swipe)
+
 
 
 
