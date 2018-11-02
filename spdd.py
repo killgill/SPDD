@@ -71,7 +71,9 @@ try:
             GPIO.output(26,1)
             if fm.currPour > 12 # wait for 12 oz of beer
                 GPIO.output(26,0) # stop flow
-                fm.currPou
+                # ADD MORE SHIT HERE
+                fm.clearCurrPour() # clear
+                authFlag = False #reset flag
 
 
 #except KeyboardInterrupt:  
