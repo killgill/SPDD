@@ -25,6 +25,8 @@ GPIO.setup(26,GPIO.OUT)
 # set up the flow meters
 fm = FlowMeter('america', ["beer"])
 
+swipe = None 
+
 # Beer, on Pin 23.
 def doAClick(channel):
     currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
@@ -60,7 +62,12 @@ try:
         ids_list = ids_list_response['values'][0]
         print(ids_list)
         print(type(ids_list))
+        print(type(swipe))
+        swipe = input("ID#")
+        print(type(swipe))
 
+        if isinstance(swipe, basestring)
+            print(swipe)
 
 
         '''
