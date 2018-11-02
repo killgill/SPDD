@@ -59,13 +59,14 @@ try:
             print(type(num_ids))
             ID_NUMBERS_RANGE = 'ids!A2:A' + str(num_ids+1)
             VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
-            ids_list_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE, majorDimension='COLUMNS', valueRenderOption=VALUE_RENDER_OPTION).execute()
+            ids_list_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE, majorDimension='COLUMNS').execute()
             pprint(ids_list_response)
             ids_list = ids_list_response['values'][0]
             print(ids_list)
             print(type(ids_list))
 
             print(type(ids_list[0]))
+            card_id = str(card_id) # placeholder
             print(type(card_id))
             if card_id in ids_list:
                 id_index = ids_list.index(card_id)
