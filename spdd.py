@@ -1,7 +1,7 @@
-##from __future__ import print_function
-##from googleapiclient.discovery import build
-##from httplib2 import Http
-##from oauth2client import file, client, tools
+from __future__ import print_function
+from googleapiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
 import os
 import time
 import math
@@ -36,24 +36,19 @@ GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) # Beer,
 try:
     while True:
 
-        print('here')
         SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-        print('here')
         store = file.Storage('token.json')
-        print('here')
         creds = store.get()
-        print('here')
         if not creds or creds.invalid:
             flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
             creds = tools.run_flow(flow, store)
-        print('here')
         service = build('sheets', 'v4', http=creds.authorize(Http()))
+        print('here')
         SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
         ID_NUMBER_RANGE_NAME = 'number_of_ids!A1'
         num_ids = service.spreadsheets().values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
         id_values = num_ids.get('values', [])
         print(id_values)
-        print('here')
 
         '''
         if fm.enabled:
