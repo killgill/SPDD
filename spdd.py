@@ -52,10 +52,15 @@ try:
         num_ids = num_ids_response['values'][0][0]
         print(num_ids)
         print(type(num_ids))
-        ID_NUMBERS_RANGE = 'ids!A2:C' + str(num_ids+1)
+        ID_NUMBERS_RANGE = 'ids!A2:A' + str(num_ids+1)
         VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
-        ids_list = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE, valueRenderOption=VALUE_RENDER_OPTION).execute()
-        pprint(ids_list)
+        ids_list_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE, valueRenderOption=VALUE_RENDER_OPTION, majorDimension=COLUMNS).execute()
+        pprint(ids_list_response)
+        ids_list = ids_list_response['values'][0]
+        print(ids_list)
+        print(type(ids_list))
+
+
 
         '''
         if fm.enabled:
