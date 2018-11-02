@@ -66,7 +66,7 @@ try:
         swipe = input("ID#")
         print(type(swipe))
 
-        if isinstance(swipe, basestring)
+        if isinstance(swipe, basestring):
             print(swipe)
 
 
