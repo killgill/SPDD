@@ -83,6 +83,8 @@ try:
         swipe = raw_input("ID#")
         if isinstance(swipe, basestring):
             print(swipe)
+            card_id = swipe[1:11]
+            onSwipe(card_id)
         '''
         if fm.enabled:
             print(fm.getFormattedThisPour())
