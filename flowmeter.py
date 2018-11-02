@@ -11,9 +11,9 @@ class FlowMeter():
   lastClick = 0
   clickDelta = 0
   hertz = 0.0
-  flow = 0 # in Liters per second
-  thisPour = 0.0 # in Liters
-  totalPour = 0.0 # in Liters
+  flow = 0 # in oz per second
+  currPour = 0.0 # in oz
+  totalPour = 0.0 # in oz
 
   def __init__(self, displayFormat, beverage):
     self.displayFormat = displayFormat
@@ -23,7 +23,7 @@ class FlowMeter():
     self.clickDelta = 0
     self.hertz = 0.0
     self.flow = 0.0
-    self.thisPour = 0.0
+    self.currPour = 0.0
     self.totalPour = 0.0
     self.enabled = True
 
@@ -34,33 +34,18 @@ class FlowMeter():
     # calculate the instantaneous speed
     if (self.enabled == True and self.clickDelta < 1000):
       self.hertz = FlowMeter.MS_IN_A_SECOND / self.clickDelta
-      self.flow = self.hertz / (FlowMeter.SECONDS_IN_A_MINUTE * 7.5 / 33.81413)  # In Liters per second
+      self.flow = self.hertz / (FlowMeter.SECONDS_IN_A_MINUTE * 7.5 / 33.81413)  # In oz per second
       instPour = self.flow * (self.clickDelta / FlowMeter.MS_IN_A_SECOND)  
-      self.thisPour += instPour
+      self.currPour += instPour
       self.totalPour += instPour
     # Update the last click
     self.lastClick = currentTime
 
-  def getBeverage(self):
-    return str(random.choice(self.beverage))
-
-  def getFormattedClickDelta(self):
-     return str(self.clickDelta) + ' ms'
-  
-  def getFormattedHertz(self):
-     return str(round(self.hertz,3)) + ' Hz'
-  
-  def getFormattedFlow(self):
+  def getFormattedCurrPour(self):
     if(self.displayFormat == 'america'):
-      return str(round(self.flow,3)) + ' oz/s'
+      return str(round(self.currPour,3)) + ' oz'
     else:
-      return str(round(self.flow * FlowMeter.PINTS_IN_A_LITER, 3)) + ' pints/s'
-  
-  def getFormattedThisPour(self):
-    if(self.displayFormat == 'america'):
-      return str(round(self.thisPour,3)) + ' oz'
-    else:
-      return str(round(self.thisPour * FlowMeter.PINTS_IN_A_LITER, 3)) + ' pints'
+      return str(round(self.currPour * FlowMeter.PINTS_IN_A_LITER, 3)) + ' pints'
   
   def getFormattedTotalPour(self):
     if(self.displayFormat == 'america'):
@@ -68,6 +53,8 @@ class FlowMeter():
     else:
       return str(round(self.totalPour * FlowMeter.PINTS_IN_A_LITER, 3)) + ' pints'
 
-  def clear(self):
-    self.thisPour = 0;
+  def clearCurrPour(self):
+    self.currPour = 0;
+
+  def clearTotalPour(self):
     self.totalPour = 0;
