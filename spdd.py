@@ -63,9 +63,8 @@ try:
         print(ids_list)
         print(type(ids_list))
         print(type(swipe))
-        swipe = input("ID#")
+        swipe = raw_input("ID#")
         print(type(swipe))
-
         if isinstance(swipe, basestring):
             print(swipe)
 
