@@ -46,7 +46,7 @@ try:
         print('here')
         SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
         ID_NUMBER_RANGE_NAME = 'number_of_ids!A1'
-        num_ids = service.spreadsheets().values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
+        num_ids = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBER_RANGE_NAME).execute()
         id_values = num_ids.get('values', [])
         print(id_values)
 
