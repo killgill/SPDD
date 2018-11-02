@@ -29,6 +29,9 @@ def doAClick(channel):
     if fm.enabled == True:
         fm.update(currentTime)
 
+# logic flags for magnetic swipes
+authFlag = False    #If card swipe is authorized set to true
+
 
 GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) # Beer, on Pin 23
 
@@ -49,8 +52,8 @@ try:
         print(id_values)
         '''
         if fm.enabled:
-            print(fm.getFormattedThisPour())
-            GPIO.output(26,1)
+            print(fm.getFormattedcurrPour())
+
         '''
         time.sleep(2)
         GPIO.output(26,0)
@@ -59,8 +62,18 @@ try:
 
         currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
         # reset flow meter after each pour (2 secs of inactivity)
-        if (fm.thisPour <= 0.23 and currentTime - fm.lastClick > 2000):
-            fm.thisPour = 0.0
+        if (fm.currPour <= 0.23 and currentTime - fm.lastClick > 2000):
+            fm.currPour = 0.0
+
+        # Logic control for magnetic swipes
+        while authFlag
+            # Allow beer to flow
+            GPIO.output(26,1)
+            if fm.currPour > 12 # wait for 12 oz of beer
+                GPIO.output(26,0) # stop flow
+                fm.currPou
+
+
 #except KeyboardInterrupt:  
     # here you put any code you want to run before the program   
     # exits when you press CTRL+C  

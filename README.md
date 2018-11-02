@@ -19,3 +19,8 @@ Google Sheets API integration
 Swipe authentication state machine implementation
 Build the actual keg
 Precise measurement testing (aka drinking)
+(For Fun) Audio warning system
+
+Work Notes:
+Google Sheet should have this information
+ID# - Name - Beer Count - Beer Count/Hr(?)
