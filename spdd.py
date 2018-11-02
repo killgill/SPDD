@@ -38,11 +38,15 @@ try:
 
         print('here')
         SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+        print('here')
         store = file.Storage('token.json')
+        print('here')
         creds = store.get()
+        print('here')
         if not creds or creds.invalid:
             flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
             creds = tools.run_flow(flow, store)
+        print('here')
         service = build('sheets', 'v4', http=creds.authorize(Http()))
         SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
         ID_NUMBER_RANGE_NAME = 'number_of_ids!A1'
