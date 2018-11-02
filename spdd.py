@@ -1,7 +1,4 @@
 from __future__ import print_function
-from googleapiclient.discovery import build
-from httplib2 import Http
-from oauth2client import file, client, tools
 from pprint import pprint
 import os
 import time
@@ -13,6 +10,7 @@ import json
 #commented out not using Raspberry PI
 #import RPi.GPIO as GPIO
 from flowmeter import *
+from google_sheets import *
 
 '''
 def GPIO_init()
@@ -35,7 +33,8 @@ def doAClick(channel):
         fm.update(currentTime)
 
 # logic flags for magnetic swipes
-authFlag = False    #If card swipe is authorized set to true
+authFlag = False    # If card swipe is authorized set to true
+pourFlag = False    # Flag to allow pour
 
 # Beer, on Pin 23
 #GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) 
@@ -43,53 +42,59 @@ authFlag = False    #If card swipe is authorized set to true
 # main loop
 try:
     while True:
-
-        def onSwipe(card_id):
-            SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-            store = file.Storage('token.json')
-            creds = store.get()
-            if not creds or creds.invalid:
-                flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-                creds = tools.run_flow(flow, store)
-            service = build('sheets', 'v4', http=creds.authorize(Http()))
-            SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
-            ID_NUMBER_RANGE_NAME = 'number_of_ids!A1'
-            VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
-            num_ids_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBER_RANGE_NAME, valueRenderOption=VALUE_RENDER_OPTION).execute()
-            num_ids = num_ids_response['values'][0][0]
-            ID_NUMBERS_RANGE = 'ids!A2:A' + str(num_ids+1)
-            VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
-            ids_list_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE, majorDimension='COLUMNS').execute()
-            ids_list = ids_list_response['values'][0]
-            card_id = str(card_id) # placeholder
-            if card_id in ids_list:
-                id_index = ids_list.index(card_id)
-            BEERS_FOR_CARD = 'ids!C' + str(id_index+2)
-            cur_beers_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, valueRenderOption=VALUE_RENDER_OPTION).execute()
-            cur_beers = cur_beers_response['values'][0][0]
-            new_beers = {'values': [[cur_beers + 1]]}
-            new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, body=new_beers, valueInputOption='RAW').execute()
-            return True
-
         swipe = raw_input("ID#")
         if isinstance(swipe, basestring):
             card_id = swipe[1:11]
             print(card_id)
             authFlag = onSwipe(card_id)
 
+        currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
         # Logic control for magnetic swipes
-        while authFlag:
-            print(fm.currPour)
+
+        # If card is authorized (Positive)
+        if authFlag:
+            # Set the pour flag
+            pourFlag = True
+
             # Allow beer to flow
             # GPIO.output(26,1)
 
-            # fake pour
-            fm.currPour = fm.currPour + 1
-            if fm.currPour > 12: # wait for 12 oz of beer
-                # GPIO.output(26,0) # stop flow
-                # ADD MORE SHIT HERE
-                fm.clearCurrPour() # clear
-                authFlag = False #reset flag
+            # wait for pour to finish
+            while pourFlag:
+                print(fm.currPour)
+                # fake pour
+                fm.currPour = fm.currPour + 1
+
+                # Set a timer if pour inactive for 10 seconds (False Positive)
+                if (fm.currPour > 0.23 and currentTime - fm.lastClick > 10000):
+                    print("Timeout")
+                    pourFlag = False    # no more beer
+                    fm.clearCurrPour()  # clear
+                    authFlag = False    # reset authorization
+                    swipe = None        # clear the swipe
+
+                # Count ounces poured
+                if fm.currPour > 12: # wait for 12 oz of beer
+                    pourFlag = False    # no more beer
+                    # GPIO.output(26,0) # stop flow
+                    # ADD MORE SHIT HERE
+                    print("Enjoy your cold beer")
+                    fm.clearCurrPour()  # clear
+                    authFlag = False    # reset authorization
+                    swipe = None        # clear the swipe
+
+
+        # Card isn't authorized after a swipe (Negative)
+        elif ~authFlag and isinstance(swipe, basestring):
+            print("Invalid ID#. What is object?")
+            swipe = None #clear the swipe
+
+
+            
+            
+
+            
+            
 
 except:  
     # this catches ALL other exceptions including errors.  
