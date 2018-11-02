@@ -22,6 +22,8 @@ GPIO.setup(23,GPIO.IN, pull_up_down=GPIO.PUD_UP)
 #GPIO.setup(24,GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(26,GPIO.OUT)
 
+swipe = None
+
 # set up the flow meters
 fm = FlowMeter('america', ["beer"])
 
@@ -68,7 +70,6 @@ try:
         new_beers = {'values': [[cur_beers + 1]]}
         new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, body=new_beers).execute()
         pprint(new_beers_resp)
-
 
         '''
         if fm.enabled:
