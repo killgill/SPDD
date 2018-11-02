@@ -10,17 +10,16 @@ import logging
 import sys
 import json
 
-##import pygame, sys
-##from pygame.locals import *
-import RPi.GPIO as GPIO
+#commented out not using Raspberry PI
+#import RPi.GPIO as GPIO
 from flowmeter import *
-from adabot import *
-##SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-#boardRevision = GPIO.RPI_REVISION
-GPIO.setmode(GPIO.BCM) # use real GPIO numbering
-GPIO.setup(23,GPIO.IN, pull_up_down=GPIO.PUD_UP)
-#GPIO.setup(24,GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(26,GPIO.OUT)
+
+'''
+def GPIO_init()
+    GPIO.setmode(GPIO.BCM) # use real GPIO numbering
+    GPIO.setup(23,GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(26,GPIO.OUT)
+'''
 
 swipe = None
 
@@ -38,8 +37,8 @@ def doAClick(channel):
 # logic flags for magnetic swipes
 authFlag = False    #If card swipe is authorized set to true
 
-
-GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) # Beer, on Pin 23
+# Beer, on Pin 23
+#GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) 
 
 # main loop
 try:
@@ -77,24 +76,17 @@ try:
             card_id = swipe[1:11]
             print(card_id)
             authFlag = onSwipe(card_id)
-        '''
-        if fm.enabled:
-            print(fm.getFormattedcurrPour())
-
-        '''
-        '''
-        time.sleep(2)
-        GPIO.output(26,0)
-        time.sleep(2)
-        '''
 
         # Logic control for magnetic swipes
         while authFlag:
             print(fm.currPour)
             # Allow beer to flow
-            GPIO.output(26,1)
+            # GPIO.output(26,1)
+
+            # fake pour
+            fm.currPour = fm.currPour + 1
             if fm.currPour > 12: # wait for 12 oz of beer
-                GPIO.output(26,0) # stop flow
+                # GPIO.output(26,0) # stop flow
                 # ADD MORE SHIT HERE
                 fm.clearCurrPour() # clear
                 authFlag = False #reset flag
@@ -104,5 +96,6 @@ except:
     # You won't get any error messages for debugging  
     # so only use it once your code is working  
     print("Exception occured")
-finally:  
-    GPIO.cleanup() # this ensures a clean exit  
+finally:
+    pass
+    # GPIO.cleanup() # this ensures a clean exit
