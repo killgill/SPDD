@@ -70,12 +70,13 @@ try:
             cur_beers = cur_beers_response['values'][0][0]
             new_beers = {'values': [[cur_beers + 1]]}
             new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, body=new_beers, valueInputOption='RAW').execute()
+            return True
 
         swipe = raw_input("ID#")
         if isinstance(swipe, basestring):
             card_id = swipe[1:11]
             print(card_id)
-            onSwipe(card_id)
+            authFlag = onSwipe(card_id)
         '''
         if fm.enabled:
             print(fm.getFormattedcurrPour())
@@ -87,29 +88,21 @@ try:
         time.sleep(2)
         '''
 
-        currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
-        # reset flow meter after each pour (2 secs of inactivity)
-        if (fm.currPour <= 0.23 and currentTime - fm.lastClick > 2000):
-            fm.currPour = 0.0
-
         # Logic control for magnetic swipes
-        while authFlag
+        while authFlag:
+            print(fm.currPour)
             # Allow beer to flow
             GPIO.output(26,1)
-            if fm.currPour > 12 # wait for 12 oz of beer
+            if fm.currPour > 12: # wait for 12 oz of beer
                 GPIO.output(26,0) # stop flow
                 # ADD MORE SHIT HERE
                 fm.clearCurrPour() # clear
                 authFlag = False #reset flag
 
-
-#except KeyboardInterrupt:  
-    # here you put any code you want to run before the program   
-    # exits when you press CTRL+C  
 except:  
     # this catches ALL other exceptions including errors.  
     # You won't get any error messages for debugging  
     # so only use it once your code is working  
-    print("Other error or exception occurred!")
+    print("Exception occured")
 finally:  
     GPIO.cleanup() # this ensures a clean exit  
