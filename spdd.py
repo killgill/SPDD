@@ -38,7 +38,7 @@ GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) # Beer,
 try:
     while True:
 
-        SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+        SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
         store = file.Storage('token.json')
         creds = store.get()
         if not creds or creds.invalid:
@@ -60,7 +60,14 @@ try:
         ids_list = ids_list_response['values'][0]
         print(ids_list)
         print(type(ids_list))
-
+        card_id = 3453909281 # placeholder
+        id_index = ids_list.index(card_id)
+        BEERS_FOR_CARD = 'ids!C' + str(id_index+2)
+        cur_beers_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, valueRenderOption=VALUE_RENDER_OPTION).execute()
+        cur_beers = cur_beers_response['values'][0][0]
+        new_beers = {'values': [[cur_beers + 1]]}
+        new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, body=new_beers).execute()
+        pprint(new_beers_resp)
 
 
         '''
