@@ -17,8 +17,9 @@ also be tracked.
 TO-DO:
 Google Sheets API integration (DONE)
 Swipe authentication state machine implementation (DONE)
-Error handling for non-database swipes
+Error handling for non-database swipes (DONE)
 Google sheets code into seperate file (DONE)
+Create a #beers today column and have conditionals for that
 Separate google sheet into non-personal drive (Happy Smiles?)
 Build the actual keg
 Precise measurement testing (aka drinking)

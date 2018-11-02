@@ -46,7 +46,7 @@ try:
         if isinstance(swipe, basestring):
             card_id = swipe[1:11]
             print(card_id)
-            authFlag = onSwipe(card_id)
+            authFlag, id_index = onSwipe(card_id)
 
         currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
         # Logic control for magnetic swipes
@@ -74,18 +74,19 @@ try:
                     swipe = None        # clear the swipe
 
                 # Count ounces poured
-                if fm.currPour > 12: # wait for 12 oz of beer
+                if fm.currPour > 11.5 or (currentTime - fm.lastClick > 20000): # wait for 12 oz of beer
                     pourFlag = False    # no more beer
                     # GPIO.output(26,0) # stop flow
                     # ADD MORE SHIT HERE
                     print("Enjoy your cold beer, brother")
+                    gs_pour(card_id, id_index, fm.currPour)
                     fm.clearCurrPour()  # clear
                     authFlag = False    # reset authorization
                     swipe = None        # clear the swipe
 
 
         # Card isn't authorized after a swipe (Negative)
-        elif ~authFlag and isinstance(swipe, basestring):
+        elif authFlag and isinstance(swipe, basestring):
             print("Invalid ID#. What is object?")
             swipe = None #clear the swipe
 
