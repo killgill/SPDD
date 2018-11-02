@@ -15,12 +15,15 @@ count of beers. Members beer usage (beers in a certain period of time) will
 also be tracked.
 
 TO-DO:
-Google Sheets API integration
-Swipe authentication state machine implementation
+Google Sheets API integration (DONE)
+Swipe authentication state machine implementation (DONE)
+Error handling for non-database swipes
+Google sheets code into seperate file
+Separate google sheet into non-personal drive (Happy Smiles?)
 Build the actual keg
 Precise measurement testing (aka drinking)
-(For Fun) Audio warning system
+SSH into Raspberry pi
+Audio warning system, figure how to play audio files
 
 Work Notes:
-Google Sheet should have this information
-ID# - Name - Beer Count - Beer Count/Hr(?)
+
