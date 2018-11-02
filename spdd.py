@@ -56,20 +56,33 @@ try:
         print(type(num_ids))
         ID_NUMBERS_RANGE = 'ids!A2:A' + str(num_ids+1)
         VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
-        ids_list_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE, valueRenderOption=VALUE_RENDER_OPTION, majorDimension='COLUMNS').execute()
-        print('guap')
+        ids_list_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE, majorDimension='COLUMNS').execute()
         pprint(ids_list_response)
         ids_list = ids_list_response['values'][0]
         print(ids_list)
         print(type(ids_list))
-        card_id = 3453909281 # placeholder
-        id_index = ids_list.index(card_id)
+        print(type(ids_list[0]))
+        card_id = u'3453909285' # placeholder
+        print(type(card_id))
+        print('guap1')
+        if card_id in ids_list:
+            id_index = ids_list.index(card_id)
+        print(ids_list[0] == card_id)
+        print(ids_list[0])
+        print(card_id)
+        print('guap2')
         BEERS_FOR_CARD = 'ids!C' + str(id_index+2)
+        print('guap3')
         cur_beers_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, valueRenderOption=VALUE_RENDER_OPTION).execute()
+        print('guap4')
         cur_beers = cur_beers_response['values'][0][0]
+        print('guap5')
         new_beers = {'values': [[cur_beers + 1]]}
-        new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, body=new_beers).execute()
+        print('guap6')
+        new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD, body=new_beers, valueInputOption='RAW').execute()
+        print('guap7')
         pprint(new_beers_resp)
+        print('guap8')
 
         '''
         if fm.enabled:
