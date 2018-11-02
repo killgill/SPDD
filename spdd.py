@@ -36,6 +36,7 @@ GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20) # Beer,
 try:
     while True:
 
+        print('here')
         SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
         store = file.Storage('token.json')
         creds = store.get()
@@ -48,6 +49,7 @@ try:
         num_ids = service.spreadsheets().values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
         id_values = num_ids.get('values', [])
         print(id_values)
+        print('here')
 
         '''
         if fm.enabled:
