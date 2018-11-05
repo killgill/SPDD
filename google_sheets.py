@@ -47,5 +47,6 @@ def gs_pour(card_id, id_index, pour_amount):
                                                         body=new_beers, valueInputOption='RAW').execute()
     TOTAL_BEERS_RANGE = 'keg_contents!A2:B'
     keg_update = {'majorDimension':'COLUMNS', 'values': [[card_id],[pour_amount]]}
-    new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=TOTAL_BEERS_RANGE,
+    new_beers_resp = service.spreadsheets().values().append(spreadsheetId=SPREADSHEET_ID, range=TOTAL_BEERS_RANGE,
                                                         body=keg_update, valueInputOption='RAW', insertDataOption='INSERT_ROWS').execute()
+    return
