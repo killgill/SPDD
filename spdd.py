@@ -90,11 +90,6 @@ try:
             print("Invalid ID#. What is object?")
             swipe = None #clear the swipe
 
-except:  
-    # this catches ALL other exceptions including errors.  
-    # You won't get any error messages for debugging  
-    # so only use it once your code is working  
-    print("Exception occured")
 finally:
     pass
     # GPIO.cleanup() # this ensures a clean exit
