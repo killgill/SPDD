@@ -21,4 +21,4 @@ class AudioSystem():
 		fs = wav.getframerate()
 		samps = wav.getnframes()
 		os.system(self.cmd_string + filename)
-		time.sleep(samps/fs) #pause for audio
+		#time.sleep(samps/fs) #pause for audio

@@ -49,7 +49,7 @@ try:
             card_id = swipe[1:11]
             print(card_id)
             audio.playAudio(audio.swipeDetected)
-            if (card_id == '1174425248' or card_id == '3543909285'):
+            if (card_id == '1174425248' or card_id == '3453909285'):
                 audio.playAudio(audio.master[random.randint(0,1)])
             authFlag, id_index = check_ID(card_id)
 
@@ -82,7 +82,7 @@ try:
                     authFlag = False    # reset authorization
                     swipe = None        # clear the swipe
 
-                if (time.time() - startTime > 30000):
+                if (time.time() - startTime > 30):
                     audio.playAudio(audio.timeOut)
                     pourFlag = False    # no more beer
                     GPIO.output(26,0) # stop flow
@@ -93,7 +93,7 @@ try:
                     swipe = None        # clear the swipe
 
         # Card isn't authorized after a swipe (Negative)
-        elif authFlag and isinstance(swipe, basestring):
+        elif ~authFlag and isinstance(swipe, basestring):
             audio.playAudio(audio.whatIsObject[random.randint(0,1)])
             print("Invalid ID#. What is object?")
             swipe = None #clear the swipe
