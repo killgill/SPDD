@@ -7,6 +7,7 @@ import logging
 import sys
 import json
 import random
+import serial, string
 
 import RPi.GPIO as GPIO
 from flowmeter import *
