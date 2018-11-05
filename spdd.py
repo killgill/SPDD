@@ -13,6 +13,7 @@ import RPi.GPIO as GPIO
 from flowmeter import *
 from google_local import *
 from audio_system import *
+from barcodeReader import *
 
 def GPIO_init():
     GPIO.setmode(GPIO.BCM)
@@ -25,6 +26,7 @@ swipe = None
 # set up the flow meters
 fm = FlowMeter('america', ["beer"])
 audio = AudioSystem()
+br = BarcodeReader()
 
 swipe = None 
 
@@ -45,7 +47,7 @@ GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20)
 # main loop
 try:
     while True:
-        swipe = raw_input("ID#")
+        swipe = br.readStripe()
         if isinstance(swipe, basestring):
             card_id = swipe[1:11]
             print(card_id)
