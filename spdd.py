@@ -65,16 +65,8 @@ try:
                 # fake pour
                 fm.currPour = fm.currPour + 1
 
-                # Set a timer if pour inactive for 10 seconds (False Positive)
-                if (fm.currPour > 0.23 and currentTime - fm.lastClick > 10000):
-                    print("Timeout")
-                    pourFlag = False    # no more beer
-                    fm.clearCurrPour()  # clear
-                    authFlag = False    # reset authorization
-                    swipe = None        # clear the swipe
-
                 # Count ounces poured
-                if fm.currPour > 11.5 or (currentTime - fm.lastClick > 20000): # wait for 12 oz of beer
+                if fm.currPour > 11.5 or (currentTime - fm.lastClick > 30000): # wait for 12 oz of beer
                     pourFlag = False    # no more beer
                     # GPIO.output(26,0) # stop flow
                     # ADD MORE SHIT HERE
@@ -90,11 +82,6 @@ try:
             print("Invalid ID#. What is object?")
             swipe = None #clear the swipe
 
-except:  
-    # this catches ALL other exceptions including errors.  
-    # You won't get any error messages for debugging  
-    # so only use it once your code is working  
-    print("Exception occured")
 finally:
     pass
     # GPIO.cleanup() # this ensures a clean exit
