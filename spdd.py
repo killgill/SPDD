@@ -10,7 +10,7 @@ import random
 
 import RPi.GPIO as GPIO
 from flowmeter import *
-from google_sheets import *
+from google_local import *
 from audio_system import *
 
 def GPIO_init():

@@ -1,23 +1,14 @@
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
+import pickle
 
 
 def check_ID(card_id):
-    SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-    store = file.Storage('token.json')
-    creds = store.get()
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-        creds = tools.run_flow(flow, store)
-    service = build('sheets', 'v4', http=creds.authorize(Http()))
-    SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
-    ID_NUMBERS_RANGE = 'ids!A2:A'
-    VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
-
-    ids_list_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=ID_NUMBERS_RANGE,
-                                                            majorDimension='COLUMNS').execute()
     ids_list = ids_list_response['values'][0]
+    with open('ids.txt', 'rb') as filehandle:  
+        ids_list = pickle.load(filehandle)
+
     card_id = str(card_id)  # placeholder
 
     if card_id in ids_list:
