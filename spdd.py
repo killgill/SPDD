@@ -49,6 +49,8 @@ try:
             card_id = swipe[1:11]
             print(card_id)
             audio.playAudio(audio.swipeDetected)
+            if (card_id == '1174425248' or card_id == '3543909285'):
+                audio.playAudio(audio.master[random.randint(0,1)])
             authFlag, id_index = check_ID(card_id)
 
         currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
