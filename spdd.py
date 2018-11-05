@@ -62,13 +62,14 @@ try:
             pourFlag = True
             audio.playAudio(audio.readyToPour)
             startTime = time.time()
+            print('ready to pour')
 
             # Allow beer to flow
             GPIO.output(26,1)
 
             # wait for pour to finish
             while pourFlag:
-                print(fm.currPour)
+                #print(fm.currPour)
 
                 # Count ounces poured
                 if fm.currPour > 11.5: # wait for 12 oz of beer
@@ -87,6 +88,7 @@ try:
                     pourFlag = False    # no more beer
                     GPIO.output(26,0) # stop flow
                     # ADD MORE SHIT HERE
+                    print("Timeout")
                     gs_pour(card_id, id_index, fm.currPour)
                     fm.clearCurrPour()  # clear
                     authFlag = False    # reset authorization

@@ -5,7 +5,6 @@ import pickle
 
 
 def check_ID(card_id):
-    ids_list = ids_list_response['values'][0]
     with open('ids.txt', 'rb') as filehandle:  
         ids_list = pickle.load(filehandle)
 
