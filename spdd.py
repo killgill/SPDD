@@ -46,7 +46,7 @@ try:
         if isinstance(swipe, basestring):
             card_id = swipe[1:11]
             print(card_id)
-            authFlag, id_index = onSwipe(card_id)
+            authFlag, id_index = check_ID(card_id)
 
         currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
         # Logic control for magnetic swipes
