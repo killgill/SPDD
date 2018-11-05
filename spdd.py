@@ -49,7 +49,8 @@ try:
     while True:
         swipe = br.readStripe()
         if isinstance(swipe, basestring):
-            card_id = swipe[1:11]
+            print(swipe)
+            card_id = swipe[2:12]
             print(card_id)
             audio.playAudio(audio.swipeDetected)
             if (card_id == '1174425248' or card_id == '3453909285'):

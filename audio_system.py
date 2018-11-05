@@ -12,6 +12,7 @@ class AudioSystem():
 		self.enjoy = ['enjoy0.wav', 'enjoy1.wav']
 		self.welcome = ['welcome0.wav', 'welcome1.wav']
 		self.master = ['master0.wav', 'master1.wav']
+		self.polling0 = 'polling0.wav'
 
 		# Functional stuff
 		self.cmd_string = "omxplayer -o local "

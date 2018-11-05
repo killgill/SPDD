@@ -2,6 +2,8 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 import pickle
+from audio_system import *
+
 
 class PollGoogle():
     def __init__(self):
@@ -14,9 +16,11 @@ class PollGoogle():
         self.service = build('sheets', 'v4', http=self.creds.authorize(Http()))
         self.SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
         self.VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
+        self.audio = AudioSystem()
 
 
     def poll(self):
+        self.audio.playAudio('polling0')
         self.getIds()
         return
 
