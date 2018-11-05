@@ -28,6 +28,13 @@ def check_ID(card_id):
 
 def gs_pour(card_id, id_index, pour_amount):
 
+    SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
+    store = file.Storage('token.json')
+    creds = store.get()
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+        creds = tools.run_flow(flow, store)
+    service = build('sheets', 'v4', http=creds.authorize(Http()))
     SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
     BEERS_FOR_CARD = 'ids!C' + str(id_index + 2)
     VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
