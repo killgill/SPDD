@@ -6,6 +6,7 @@ import math
 import logging
 import sys
 import json
+import random
 
 #commented out not using Raspberry PI
 #import RPi.GPIO as GPIO
@@ -46,7 +47,7 @@ try:
         if isinstance(swipe, basestring):
             card_id = swipe[1:11]
             print(card_id)
-            authFlag = onSwipe(card_id)
+            authFlag, id_index = check_ID(card_id)
 
         currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
         # Logic control for magnetic swipes
@@ -55,6 +56,7 @@ try:
         if authFlag:
             # Set the pour flag
             pourFlag = True
+            startTime = time.time()
 
             # Allow beer to flow
             # GPIO.output(26,1)
@@ -63,37 +65,24 @@ try:
             while pourFlag:
                 print(fm.currPour)
                 # fake pour
-                fm.currPour = fm.currPour + 1
-
-                # Set a timer if pour inactive for 10 seconds (False Positive)
-                if (fm.currPour > 0.23 and currentTime - fm.lastClick > 10000):
-                    print("Timeout")
-                    pourFlag = False    # no more beer
-                    fm.clearCurrPour()  # clear
-                    authFlag = False    # reset authorization
-                    swipe = None        # clear the swipe
+                fm.currPour = fm.currPour + random.uniform(0,1)
 
                 # Count ounces poured
-                if fm.currPour > 12: # wait for 12 oz of beer
+                if fm.currPour > 11.5 or (time.time() - startTime > 30000): # wait for 12 oz of beer
                     pourFlag = False    # no more beer
                     # GPIO.output(26,0) # stop flow
                     # ADD MORE SHIT HERE
                     print("Enjoy your cold beer, brother")
+                    gs_pour(card_id, id_index, fm.currPour)
                     fm.clearCurrPour()  # clear
                     authFlag = False    # reset authorization
                     swipe = None        # clear the swipe
 
-
         # Card isn't authorized after a swipe (Negative)
-        elif ~authFlag and isinstance(swipe, basestring):
+        elif authFlag and isinstance(swipe, basestring):
             print("Invalid ID#. What is object?")
             swipe = None #clear the swipe
 
-except:  
-    # this catches ALL other exceptions including errors.  
-    # You won't get any error messages for debugging  
-    # so only use it once your code is working  
-    print("Exception occured")
 finally:
     pass
     # GPIO.cleanup() # this ensures a clean exit
