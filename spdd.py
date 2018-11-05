@@ -55,6 +55,7 @@ try:
         if authFlag:
             # Set the pour flag
             pourFlag = True
+            startTime = time.time()
 
             # Allow beer to flow
             # GPIO.output(26,1)
@@ -66,7 +67,7 @@ try:
                 fm.currPour = fm.currPour + 1
 
                 # Count ounces poured
-                if fm.currPour > 11.5 or (currentTime - fm.lastClick > 30000): # wait for 12 oz of beer
+                if fm.currPour > 11.5 or (time.time() - startTime > 30000): # wait for 12 oz of beer
                     pourFlag = False    # no more beer
                     # GPIO.output(26,0) # stop flow
                     # ADD MORE SHIT HERE
@@ -75,7 +76,6 @@ try:
                     fm.clearCurrPour()  # clear
                     authFlag = False    # reset authorization
                     swipe = None        # clear the swipe
-
 
         # Card isn't authorized after a swipe (Negative)
         elif authFlag and isinstance(swipe, basestring):
