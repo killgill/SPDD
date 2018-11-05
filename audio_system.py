@@ -1,7 +1,7 @@
 import time
 import os
 import wave
-class audioSystem():
+class AudioSystem():
 	# Put audio filenames string here
 	ready2pour = "ready2pour.wav"
 	# Functional stuff

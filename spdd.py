@@ -12,6 +12,7 @@ import random
 #import RPi.GPIO as GPIO
 from flowmeter import *
 from google_sheets import *
+from audio_system import *
 
 '''
 def GPIO_init()
@@ -24,6 +25,7 @@ swipe = None
 
 # set up the flow meters
 fm = FlowMeter('america', ["beer"])
+audio = AudioSystem()
 
 swipe = None 
 
@@ -47,6 +49,7 @@ try:
         if isinstance(swipe, basestring):
             card_id = swipe[1:11]
             print(card_id)
+            audio.playAudio(ready2pour)
             authFlag, id_index = check_ID(card_id)
 
         currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
