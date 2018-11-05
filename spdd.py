@@ -6,6 +6,7 @@ import math
 import logging
 import sys
 import json
+import random
 
 #commented out not using Raspberry PI
 #import RPi.GPIO as GPIO
@@ -64,7 +65,7 @@ try:
             while pourFlag:
                 print(fm.currPour)
                 # fake pour
-                fm.currPour = fm.currPour + 1
+                fm.currPour = fm.currPour + random.uniform(0,1)
 
                 # Count ounces poured
                 if fm.currPour > 11.5 or (time.time() - startTime > 30000): # wait for 12 oz of beer
