@@ -14,6 +14,12 @@ compare it to a users student identification number and then increment their
 count of beers. Members beer usage (beers in a certain period of time) will 
 also be tracked.
 
+### SSH Static IP
+192.168.2.169 on spdfast_2.4 and spdfast_5.0
+
+### How to Run Effectively
+When sshing, attempt to run the command 'tmux attach'. If there are no windows to attach to, run 'tmux'. Inside the tmux shell, navigate to ''~/Documents/SPDD' and run 'sudo python spdd.py'. You can then detach from the tmux session and the system will persist.
+
 TO-DO:
 Google Sheets API integration (DONE)
 Swipe authentication state machine implementation (DONE)
@@ -25,6 +31,7 @@ Build the actual keg
 Precise measurement testing (aka drinking)
 SSH into Raspberry pi
 Audio warning system, figure how to play audio files
+Cron job to start on reboot
 
 Work Notes:
 
