@@ -47,10 +47,11 @@ GPIO.add_event_detect(23, GPIO.RISING, callback=doAClick, bouncetime=20)
 # main loop
 try:
     while True:
+        print('waiting for swipe')
         swipe = br.readStripe()
         if isinstance(swipe, basestring):
             print(swipe)
-            card_id = swipe[2:12]
+            card_id = swipe[15:25]
             print(card_id)
             audio.playAudio(audio.swipeDetected)
             if (card_id == '1174425248' or card_id == '3453909285'):
@@ -76,22 +77,20 @@ try:
                 #print(fm.currPour)
 
                 # Count ounces poured
-                if fm.currPour > 11.5: # wait for 12 oz of beer
-                    audio.playAudio(audio.enjoy[random.randint(0,1)])
+                if fm.currPour >= 8: # wait for 12 oz of beer
                     pourFlag = False    # no more beer
                     GPIO.output(26,0) # stop flow
-                    # ADD MORE SHIT HERE
+                    audio.playAudio(audio.enjoy[random.randint(0,1)])
                     print("Enjoy your cold beer, brother")
                     gs_pour(card_id, id_index, fm.currPour)
                     fm.clearCurrPour()  # clear
                     authFlag = False    # reset authorization
                     swipe = None        # clear the swipe
 
-                if (time.time() - startTime > 30):
-                    audio.playAudio(audio.timeOut)
+                if (time.time() - startTime > 45):
                     pourFlag = False    # no more beer
                     GPIO.output(26,0) # stop flow
-                    # ADD MORE SHIT HERE
+                    audio.playAudio(audio.timeOut)
                     print("Timeout")
                     gs_pour(card_id, id_index, fm.currPour)
                     fm.clearCurrPour()  # clear

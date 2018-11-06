@@ -20,7 +20,7 @@ class PollGoogle():
 
 
     def poll(self):
-        self.audio.playAudio('polling0')
+        self.audio.playAudio(self.audio.polling0)
         self.getIds()
         return
 
