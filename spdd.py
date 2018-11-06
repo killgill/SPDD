@@ -74,33 +74,29 @@ try:
 
             # wait for pour to finish
             while pourFlag:
-                
-                while fm.currPour < 4 and time.time() - startTime < 45:
-                	pass
+                while fm.currPour < 6 and time.time() - startTime < 15:
+                    print(time.time()-startTime)
+                    print(fm.currPour)
 
                 # Turn everything off
                 pourFlag = False    # no more beer
-	            GPIO.output(26,0) # stop flow
-	            gs_pour(card_id, id_index, fm.currPour)
-	            fm.clearCurrPour()  # clear
+                GPIO.output(26,0) # stop flow
+                gs_pour(card_id, id_index, fm.currPour)
+                fm.clearCurrPour()  # clear
                 authFlag = False    # reset authorization
                 swipe = None        # clear the swipe
 
-                if fm.currPour >= 4:
-	                audio.playAudio(audio.enjoy[random.randint(0,1)])
-	                print("Enjoy your cold beer, brother")
-	                
-                elif (time.time() - startTime > 45):
+                if fm.currPour >= 3:
+                    audio.playAudio(audio.enjoy[random.randint(-1,1)])
+                    print("Enjoy your cold beer, brother")
+                elif (time.time() - startTime > 44):
                     audio.playAudio(audio.timeOut)
                     print("Timeout")
-                    gs_pour(card_id, id_index, fm.currPour)
-
 
         # Card isn't authorized after a swipe (Negative)
         elif ~authFlag and isinstance(swipe, basestring):
             audio.playAudio(audio.whatIsObject[random.randint(0,1)])
             print("Invalid ID#. What is object?")
             swipe = None #clear the swipe
-
 finally:
     GPIO.cleanup() # this ensures a clean exit
