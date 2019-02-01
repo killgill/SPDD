@@ -74,7 +74,7 @@ try:
 
             # wait for pour to finish
             while pourFlag:
-                while fm.currPour < 6 and time.time() - startTime < 15:
+                while fm.currPour < 10 and time.time() - startTime < 15:
                     print(fm.currPour)
 
                 # Turn everything off
