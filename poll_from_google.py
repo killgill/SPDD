@@ -26,7 +26,7 @@ class PollGoogle():
 
 
     def getIds(self):
-        ID_NUMBERS_RANGE = 'ids!A2:A'
+        ID_NUMBERS_RANGE = 'ids_and_drinks!A2:A'
         ids_list_response = self.service.spreadsheets().values().get(spreadsheetId=self.SPREADSHEET_ID, range=ID_NUMBERS_RANGE,
                                     majorDimension='COLUMNS').execute()
         ids_list = ids_list_response['values'][0]
