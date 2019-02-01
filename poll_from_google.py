@@ -7,6 +7,7 @@ from audio_system import *
 
 class PollGoogle():
     def __init__(self):
+        #sets up spreadsheet connection
         self.SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
         self.store = file.Storage('token.json')
         self.creds = self.store.get()
@@ -20,11 +21,13 @@ class PollGoogle():
 
 
     def poll(self):
+        #plays music
         self.audio.playAudio(self.audio.polling0)
         self.getIds()
         return
 
 
+    #grab the ids and put them in a text file
     def getIds(self):
         ID_NUMBERS_RANGE = 'ids_and_drinks!A2:A'
         ids_list_response = self.service.spreadsheets().values().get(spreadsheetId=self.SPREADSHEET_ID, range=ID_NUMBERS_RANGE,
