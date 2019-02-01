@@ -26,15 +26,7 @@ def gs_pour(card_id, id_index, pour_amount):
         creds = tools.run_flow(flow, store)
     service = build('sheets', 'v4', http=creds.authorize(Http()))
     SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
-    BEERS_FOR_CARD = 'ids!C' + str(id_index + 2)
-    VALUE_RENDER_OPTION = 'UNFORMATTED_VALUE'
-    cur_beers_response = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD,
-                                                        valueRenderOption=VALUE_RENDER_OPTION).execute()
 
-    cur_beers = cur_beers_response['values'][0][0]
-    new_beers = {'values': [[cur_beers + 1]]}
-    new_beers_resp = service.spreadsheets().values().update(spreadsheetId=SPREADSHEET_ID, range=BEERS_FOR_CARD,
-                                                        body=new_beers, valueInputOption='RAW').execute()
     TOTAL_BEERS_RANGE = 'keg_contents!A2:B'
     keg_update = {'majorDimension':'COLUMNS', 'values': [[card_id],[pour_amount]]}
     new_beers_resp = service.spreadsheets().values().append(spreadsheetId=SPREADSHEET_ID, range=TOTAL_BEERS_RANGE,
