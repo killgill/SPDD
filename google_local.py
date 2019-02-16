@@ -23,6 +23,7 @@ def check_ID(card_id):
 def gs_pour(card_id, pour_amount):
 
     # the following block sets up the spreadsheet API and connects to spreadsheet
+    time_now = datetime.now().strftime('%m-%d %H:%M')
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
     store = file.Storage('token.json')
     creds = store.get()
@@ -40,7 +41,7 @@ def gs_pour(card_id, pour_amount):
         'values': [
             [card_id],
             [pour_amount],
-            [str(datetime.now())]
+            [time_now]
         ]
     }
     # put the data into the sheet
