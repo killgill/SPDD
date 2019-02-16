@@ -1,6 +1,7 @@
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
+from datetime import datetime
 import pickle
 
 
@@ -34,12 +35,13 @@ def gs_pour(card_id, id_index, pour_amount):
     service = build('sheets', 'v4', http=creds.authorize(Http()))
 
     SPREADSHEET_ID = '1hopTf_z_OzquBngV11XTryX9qX4AiYPi1hsOucpfVbk'
-    TOTAL_BEERS_RANGE = 'keg_contents!A2:B'
+    TOTAL_BEERS_RANGE = 'keg_contents!A2:C'
     keg_update = {
         'majorDimension': 'COLUMNS',
         'values': [
             [card_id],
-            [pour_amount]
+            [pour_amount],
+            [str(datetime.now())]
         ]
     }
     #put the data into the sheet
