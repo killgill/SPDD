@@ -56,7 +56,7 @@ try:
             audio.playAudio(audio.swipeDetected)
             if (card_id == '1174425248' or card_id == '3453909285'):
                 audio.playAudio(audio.master[random.randint(0,1)])
-            authFlag, id_index = check_ID(card_id)
+            authFlag = check_ID(card_id)
 
         currentTime = int(time.time() * FlowMeter.MS_IN_A_SECOND)
         # Logic control for magnetic swipes
@@ -80,7 +80,7 @@ try:
                 # Turn everything off
                 pourFlag = False    # no more beer
                 GPIO.output(26,0) # stop flow
-                gs_pour(card_id, id_index, fm.currPour)
+                gs_pour(card_id, fm.currPour)
 
                 if fm.currPour >= 6:
                     audio.playAudio(audio.enjoy[random.randint(0,1)])
